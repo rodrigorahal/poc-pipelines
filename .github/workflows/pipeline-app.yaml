@@ -18,4 +18,11 @@ jobs:
           python-version: 3.9
       - name: Unit tests
         run: python app/test.py
+      - name: Package app
+        run: zip -r app.zip ./app
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app.zip
+          path: app.zip
         

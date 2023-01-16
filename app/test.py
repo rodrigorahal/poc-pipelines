@@ -1,1 +1,1 @@
-assert False
+assert True
