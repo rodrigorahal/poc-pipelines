@@ -1,6 +1,5 @@
 import boto3
 import io
-import os
 import json
 import sys
 
@@ -68,9 +67,6 @@ if __name__ == "__main__":
     function_name = sys.argv[1]
     application_name= sys.argv[2]
     deployment_group_name = sys.argv[3]
-
-    with open('./app.zip') as f:
-        print('opened zipfile')
 
     target_version = update_function_code(function_name)
     print(f"Target version: {target_version}")
