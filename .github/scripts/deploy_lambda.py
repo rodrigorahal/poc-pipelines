@@ -2,6 +2,7 @@ import boto3
 import io
 import json
 import sys
+import time
 
 
 lambda_client = boto3.client('lambda')
@@ -61,6 +62,22 @@ def create_deployment(application_name, deployment_group_name, current_version, 
     deployment_id = response["deploymentId"]
     return deployment_id
 
+def poll_deployment_status(deployment_id):
+    timeout = time.time() + 15 * 60
+    while time.time() < timeout:
+        response = codedeploy_client.get_deployment(deploymentId=deployment_id)
+
+        status = response.get("deploymentInfo", {}).get("status", "InProgress")
+        if status == "Succeeded":
+            return
+        elif status == "Failed":
+            raise ValueError(f"Deployment: {deployment_id} failed")
+        
+        time.sleep(60)
+    
+    raise ValueError(f"Timeout while getting deployment: {deployment_id} status")
+        
+
 if __name__ == "__main__":
     function_name = sys.argv[1]
     application_name= sys.argv[2]
@@ -72,3 +89,6 @@ if __name__ == "__main__":
     print(f"Current version: {current_version}")
     deployment_id = create_deployment(application_name, deployment_group_name, current_version, target_version)
     print(f"Deployment id: {deployment_id}")
+
+    poll_deployment_status(deployment_id)
+    print(f"Deployment id: {deployment_id} succeeded")
