@@ -5,7 +5,7 @@ import sys
 
 lambda_client = boto3.client('lambda')
 
-def run(function_name, a, b):
+def run_integ_tests(function_name, a, b):
     payload = {
         "a": a, "b": b
     }
@@ -25,4 +25,4 @@ def run(function_name, a, b):
 
 if __name__ == "__main__":
     function_name = sys.argv[1]
-    run(function_name, 1, 2)
+    run_integ_tests(function_name, 1, 2)

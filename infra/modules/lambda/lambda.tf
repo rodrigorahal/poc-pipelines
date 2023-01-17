@@ -54,21 +54,6 @@ data "archive_file" "default" {
   output_path = abspath("${path.module}/../app/app.zip")
 }
 
-# resource "aws_s3_bucket" "lambda_artifacts_bucket" {
-#   bucket        = "${env.var}-lambda-artifacts-bucket"
-#   force_destroy = true
-# }
-
-# resource "aws_s3_bucket_acl" "acl" {
-#   bucket = aws_s3_bucket.lambda_artifacts_bucket.id
-#   acl    = "private"
-# }
-
-# resource "aws_s3_bucket_object" "lambda_bootstrap_artifact" {
-#   bucket = aws_s3_bucket.lambda_artifacts_bucket.id
-#   key = "boot"
-  
-# }
 
 # Create a Lambda Function
 resource "aws_lambda_function" "poc_pipelines_lambda" {

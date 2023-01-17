@@ -13,6 +13,6 @@ variable "function_name" {
 }
 
 variable "rollback_enabled" {
-  type = bool
+  type    = bool
   default = false
 }

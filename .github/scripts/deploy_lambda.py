@@ -9,7 +9,7 @@ lambda_client = boto3.client('lambda')
 codedeploy_client = boto3.client('codedeploy')
 
 
-def make_zip_file_bytes(path, name):
+def make_zip_file_bytes(path):
     with open(path, "rb") as f:
         buf = io.BytesIO(f.read())
         return buf.getvalue()
@@ -18,7 +18,7 @@ def make_zip_file_bytes(path, name):
 def update_function_code(function_name):
     response = lambda_client.update_function_code(
         FunctionName=function_name,
-        ZipFile=make_zip_file_bytes('./app.zip', 'app.zip'),
+        ZipFile=make_zip_file_bytes('./app.zip'),
         Publish=True,
     )
     target_version = response["Version"]

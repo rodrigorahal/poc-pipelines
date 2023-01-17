@@ -1,19 +1,13 @@
 module "lambda_function" {
-  source = "../modules/lambda"
-
-  env = "prod"
-
+  source        = "../modules/lambda"
+  env           = "prod"
   function_name = "poc_pipelines_lambda"
 }
 
 module "codedeploy" {
-  source = "../modules/codedeploy"
-
-  env = "prod"
-
+  source                 = "../modules/codedeploy"
+  env                    = "prod"
   deployment_config_name = "CodeDeployDefault.LambdaLinear10PercentEvery1Minute"
-
-  function_name = "poc_pipelines_lambda"
-
-  rollback_enabled = true
+  function_name          = "poc_pipelines_lambda"
+  rollback_enabled       = true
 }
