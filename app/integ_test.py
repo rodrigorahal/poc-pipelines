@@ -11,7 +11,7 @@ def run(function_name, a, b):
     }
     response = lambda_client.invoke(
         FunctionName=function_name,
-        Payload=payload
+        Payload=json.dumps(payload)
     )
 
     res_payload = json.loads(response["Payload"].read())
