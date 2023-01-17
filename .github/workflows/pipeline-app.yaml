@@ -25,7 +25,7 @@ jobs:
         with:
           name: app.zip
           path: app.zip
-          
+
   deploy-dev:
     name: Deploy to Dev environment
     runs-on: ubuntu-latest
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod
-    needs: build
+    needs: [build, deploy-dev, approval-steps-dev]
 
     steps:
       - name: Checkout repo
