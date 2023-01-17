@@ -1,5 +1,6 @@
 import boto3
 import io
+import os
 import json
 import sys
 
@@ -10,6 +11,7 @@ codedeploy_client = boto3.client('codedeploy')
 
 
 def make_zip_file_bytes(path, name):
+    print(os.getcwd())
     buf = io.BytesIO()
     with ZipFile(buf, 'w') as z:
         z.write(path, name)
