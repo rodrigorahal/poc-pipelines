@@ -1,23 +1,35 @@
 import boto3
+import json
 import sys
 
 
 lambda_client = boto3.client('lambda')
 
-def run(function_name):
+def run(function_name, a, b):
+    payload = {
+        "a": a, "b": b
+    }
     response = lambda_client.invoke(
-        FunctionName=function_name
+        FunctionName=function_name,
+        Payload=payload
     )
 
-    print(response)
-
-    if response["StatusCode"] != 200:
-        raise ValueError("Integration tests failed")
+    res_payload = json.loads(response["Payload"].read())
     
+    print(res_payload)
+
+    assert response["StatusCode"] == 200, "Integration tests failed"
+
+    assert res_payload["result"] == a+b, "Integration tests failed"
+
     print("Integration tests finished succesfully")
 
 
 if __name__ == "__main__":
     function_name = sys.argv[1]
 
-    run(function_name)
+    if len(sys.argv) > 2:
+        # fail
+        run(function_name, 1, "b")
+    else:
+        run(function_name, 1, 2)

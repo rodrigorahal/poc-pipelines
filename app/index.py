@@ -1,6 +1,16 @@
 
 def lambda_handler(event, context):
-    print("Hello World!")
+    if "a" not in event or "b" not in event:
+        raise ValueError("a and b are required")
+    
+    a = event["a"]
+    b = event["b"]
+
+    res = add(a, b)
+
     return {
-        "message": "hello world!"
+        "result": res
     }
+
+def add(a, b):
+    return a + b
