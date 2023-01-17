@@ -11,7 +11,6 @@ codedeploy_client = boto3.client('codedeploy')
 
 
 def make_zip_file_bytes(path, name):
-    print(os.getcwd())
     buf = io.BytesIO()
     with ZipFile(buf, 'w') as z:
         z.write(path, name)
@@ -69,6 +68,9 @@ if __name__ == "__main__":
     function_name = sys.argv[1]
     application_name= sys.argv[2]
     deployment_group_name = sys.argv[3]
+
+    with open('./app.zip') as f:
+        print('opened zipfile')
 
     target_version = update_function_code(function_name)
     print(f"Target version: {target_version}")
