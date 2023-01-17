@@ -55,7 +55,7 @@ jobs:
           python ./.github/scripts/deploy_lambda.py "dev_poc_pipelines_lambda" "dev_CodeDeployApp" "dev_CodeDeployDeploymentGroup"
 
   dev-approval-steps:
-    name: Approval steps for dev-approval-steps
+    name: Approval steps for dev
     runs-on: ubuntu-latest
     needs: [build, deploy-dev]
 
