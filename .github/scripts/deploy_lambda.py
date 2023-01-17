@@ -37,11 +37,11 @@ def create_deployment(application_name, deployment_group_name, current_version, 
     app_spec = {
         "version": 0.0,
         "Resources": [{
-            [function_name]: {
+            function_name: {
                 "Type": "AWS::Lambda::Function",
                 "Properties": {
                     "Name": function_name,
-                    "Alias": f"${function_name}_alias",
+                    "Alias": f"{function_name}_alias",
                     "CurrentVersion": current_version,
                     "TargetVersion": target_version
                 }
@@ -64,13 +64,13 @@ def create_deployment(application_name, deployment_group_name, current_version, 
     return deployment_id
 
 if __name__ == "__main__":
-    function_name = sys.argv[0]
-    application_name= sys.argv[1]
-    deployment_group_name = sys.argv[2]
+    function_name = sys.argv[1]
+    application_name= sys.argv[2]
+    deployment_group_name = sys.argv[3]
 
-    target_version = update_function_code()
+    target_version = update_function_code(function_name)
     print(f"Target version: {target_version}")
-    current_version = get_alias_current_version()
+    current_version = get_alias_current_version(function_name)
     print(f"Current version: {current_version}")
-    deployment_id = create_deployment(current_version, target_version)
+    deployment_id = create_deployment(application_name, deployment_group_name, current_version, target_version)
     print(f"Deployment id: {deployment_id}")
