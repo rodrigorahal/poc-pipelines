@@ -70,7 +70,7 @@ def poll_deployment_status(deployment_id):
         status = response.get("deploymentInfo", {}).get("status", "InProgress")
         if status == "Succeeded":
             return
-        elif status == "Failed":
+        elif status in ("Failed", "Stopped"):
             raise ValueError(f"Deployment: {deployment_id} failed")
         
         time.sleep(60)
