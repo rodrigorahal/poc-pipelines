@@ -10,13 +10,11 @@ def run(function_name, a, b):
         "a": a, "b": b
     }
     response = lambda_client.invoke(
-        FunctionName=function_name,
+        FunctionName=f"{function_name}:{function_name}_alias",
         Payload=json.dumps(payload)
     )
 
     res_payload = json.loads(response["Payload"].read())
-    
-    print(res_payload)
 
     assert response["StatusCode"] == 200, "Integration tests failed"
 
@@ -27,9 +25,4 @@ def run(function_name, a, b):
 
 if __name__ == "__main__":
     function_name = sys.argv[1]
-
-    if len(sys.argv) > 2:
-        # fail
-        run(function_name, 1, "b")
-    else:
-        run(function_name, 1, 2)
+    run(function_name, 1, 2)
