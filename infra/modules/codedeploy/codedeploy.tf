@@ -33,6 +33,7 @@ resource "aws_cloudwatch_metric_alarm" "rollback_alarm" {
   threshold                 = "1"
   alarm_description         = "This metric monitors lambda errors"
   insufficient_data_actions = []
+  treat_missing_data        = "notBreaching"
 
   dimensions = {
     FunctionName = "${var.env}_${var.function_name}"
