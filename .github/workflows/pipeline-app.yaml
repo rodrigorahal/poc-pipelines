@@ -29,6 +29,8 @@ jobs:
   deploy-dev:
     name: Deploy to Dev environment
     runs-on: ubuntu-latest
+    environment:
+      name: dev
     needs: build
 
     steps:
