@@ -25,7 +25,7 @@ jobs:
         with:
           name: app.zip
           path: app.zip
-  
+          
   deploy-dev:
     name: Deploy to Dev environment
     runs-on: ubuntu-latest
@@ -80,4 +80,32 @@ jobs:
         run: |
           python app/integ_test.py "dev_poc_pipelines_lambda"
 
+  deploy-prod:
+    name: Deploy to Prod environment
+    runs-on: ubuntu-latest
+    environment:
+      name: prod
+    needs: build
 
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: pip install boto3
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app.zip
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - name: Deploy lambda
+        run: |
+          python ./.github/scripts/deploy_lambda.py "prod_poc_pipelines_lambda" "prod_CodeDeployApp" "prod_CodeDeployDeploymentGroup"
