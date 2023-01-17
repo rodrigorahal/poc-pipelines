@@ -5,9 +5,8 @@ import sys
 
 from zipfile import ZipFile
 
-session = boto3.Session(profile_name="rodrah")
-lambda_client = session.client('lambda')
-codedeploy_client = session.client('codedeploy')
+lambda_client = boto3.client('lambda')
+codedeploy_client = boto3.client('codedeploy')
 
 
 def make_zip_file_bytes(path, name):
