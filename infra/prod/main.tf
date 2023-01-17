@@ -12,4 +12,8 @@ module "codedeploy" {
   env = "prod"
 
   deployment_config_name = "CodeDeployDefault.LambdaLinear10PercentEvery1Minute"
+
+  function_name = "poc_pipelines_lambda"
+
+  rollback_enabled = true
 }
