@@ -79,7 +79,7 @@ resource "aws_lambda_function" "poc_pipelines_lambda" {
   ]
   filename = abspath("${path.module}/../app/app.zip")
   runtime  = "python3.9"
-  handler  = "index.lambda_handler"
+  handler  = "app.index.lambda_handler"
 
   source_code_hash = data.archive_file.default.output_base64sha256
 

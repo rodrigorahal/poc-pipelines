@@ -3,17 +3,15 @@ import io
 import json
 import sys
 
-from zipfile import ZipFile
 
 lambda_client = boto3.client('lambda')
 codedeploy_client = boto3.client('codedeploy')
 
 
 def make_zip_file_bytes(path, name):
-    buf = io.BytesIO()
-    with ZipFile(buf, 'w') as z:
-        z.write(path, name)
-    return buf.getvalue()
+    with open(path, "rb") as f:
+        buf = io.BytesIO(f.read())
+        return buf.getvalue()
 
 
 def update_function_code(function_name):
