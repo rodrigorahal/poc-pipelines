@@ -3,22 +3,21 @@ import json
 import sys
 
 
-lambda_client = boto3.client('lambda')
+lambda_client = boto3.client("lambda")
+
 
 def run_integ_tests(function_name, a, b):
-    payload = {
-        "a": a, "b": b
-    }
+    payload = {"a": a, "b": b}
     response = lambda_client.invoke(
         FunctionName=f"{function_name}:{function_name}_alias",
-        Payload=json.dumps(payload)
+        Payload=json.dumps(payload),
     )
 
     res_payload = json.loads(response["Payload"].read())
 
     assert response["StatusCode"] == 200, "Integration tests failed"
 
-    assert res_payload["result"] == a+b, "Integration tests failed"
+    assert res_payload["result"] == a + b, "Integration tests failed"
 
     print("Integration tests finished succesfully")
 

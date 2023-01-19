@@ -9,7 +9,7 @@ module "iam_github_oidc_role" {
 
   policies = {
     AWSLambdaRole               = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
-    AWSLambda_ReadOnlyAccess    = "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess"
+    AWSLambda_FullAccess        = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
     AWSCodeDeployDeployerAccess = "arn:aws:iam::aws:policy/AWSCodeDeployDeployerAccess"
   }
 }
