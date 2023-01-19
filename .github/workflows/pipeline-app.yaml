@@ -35,6 +35,9 @@ jobs:
     environment:
       name: dev
     needs: build
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout repo
@@ -62,6 +65,9 @@ jobs:
     name: Approval steps for dev
     runs-on: ubuntu-latest
     needs: [build, deploy-dev]
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout repo
@@ -87,6 +93,9 @@ jobs:
     environment:
       name: prod
     needs: [build, deploy-dev, approval-steps-dev]
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout repo
