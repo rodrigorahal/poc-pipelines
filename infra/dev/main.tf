@@ -11,3 +11,7 @@ module "codedeploy" {
   function_name          = "poc_pipelines_lambda"
   rollback_enabled       = false
 }
+
+module "github_iam" {
+  source = "../modules/github"
+}
