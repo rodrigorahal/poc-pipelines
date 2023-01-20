@@ -50,8 +50,8 @@ resource "aws_iam_role_policy_attachment" "policy_attach" {
 
 data "archive_file" "default" {
   type        = "zip"
-  source_dir  = abspath("${path.module}/../../../app/")
-  output_path = abspath("${path.module}/../app/app.zip")
+  source_dir  = abspath("${path.module}/bootstrap/")
+  output_path = abspath("${path.module}/app.zip")
 }
 
 
@@ -62,11 +62,22 @@ resource "aws_lambda_function" "poc_pipelines_lambda" {
   depends_on = [
     aws_iam_role_policy_attachment.policy_attach
   ]
-  filename = abspath("${path.module}/../app/app.zip")
+  filename = abspath("${path.module}/app.zip")
   runtime  = "python3.9"
   handler  = "app.index.lambda_handler"
 
   source_code_hash = data.archive_file.default.output_base64sha256
+
+  lifecycle {
+    ignore_changes = [
+      source_code_hash,
+      last_modified,
+      qualified_arn,
+      qualified_invoke_arn,
+      version,
+      filename
+    ]
+  }
 
   publish = true
 }
@@ -75,6 +86,9 @@ resource "aws_lambda_alias" "lambda_alias" {
   name             = "${var.env}_${var.function_name}_alias"
   function_name    = aws_lambda_function.poc_pipelines_lambda.function_name
   function_version = "1"
+  depends_on = [
+    aws_lambda_function.poc_pipelines_lambda
+  ]
 
   lifecycle {
     ignore_changes = [function_version, routing_config]
