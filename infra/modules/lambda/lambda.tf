@@ -1,21 +1,20 @@
 # Creating IAM role so that Lambda service to assume the role and access other AWS services. 
 resource "aws_iam_role" "lambda_role" {
   name               = "${var.env}_iam_role_lambda_function_${var.function_name}"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
+  assume_role_policy = jsonencode(
     {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": "sts:AssumeRole",
+          "Principal": {
+            "Service": "lambda.amazonaws.com"
+          },
+          "Effect": "Allow",
+          "Sid": ""
+        }
+      ]
+    })
 }
 
 # IAM policy for logging from a lambda
@@ -24,22 +23,21 @@ resource "aws_iam_policy" "lambda_logging" {
   name        = "${var.env}_iam_policy_lambda_logging_function_${var.function_name}"
   path        = "/"
   description = "IAM policy for logging from a lambda"
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
+  policy      = jsonencode(
     {
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "arn:aws:logs:*:*:*",
-      "Effect": "Allow"
-    }
-  ]
-}
-EOF
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "arn:aws:logs:*:*:*",
+          "Effect": "Allow"
+        }
+      ]
+    })
 }
 
 # Policy Attachment on the role.
