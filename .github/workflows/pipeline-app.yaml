@@ -117,4 +117,4 @@ jobs:
           aws-region: us-west-2
       - name: Deploy lambda
         run: |
-          python ./.github/scripts/deploy_lambda.py "prod_poc_pipelines_lambda" "prod_CodeDeployApp" "prod_CodeDeployDeploymentGroup"
+          python ./.github/scripts/deploy_lambda.py "prod_poc_pipelines_lambda_2" "prod_CodeDeployApp" "prod_CodeDeployDeploymentGroup"
